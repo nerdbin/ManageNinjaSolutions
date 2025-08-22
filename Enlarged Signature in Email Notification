@@ -1,0 +1,10 @@
+add_filter('fluentform/email_body', function($emailBody, $form, $notification, $submissionId) {
+    // Replace signature image styling in email body
+    $emailBody = str_replace(
+        '<img',
+        '<img style="max-width: 300px; height: 200px; width: auto;"',
+        $emailBody
+    );
+    
+    return $emailBody;
+}, 10, 4);
