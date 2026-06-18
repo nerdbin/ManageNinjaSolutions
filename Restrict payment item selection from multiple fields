@@ -1,14 +1,39 @@
 jQuery(document).ready(function ($) {
-    var $form = $('#fluentform_3');
+    var $form = $('#fluentform_16');
 
-    $form.on('change', 'input.ff_payment_item[type="checkbox"]', function () {
+    function clearStandalonePaymentError() {
+        $form.find('.ff-single-payment-item')
+            .removeClass('ff-el-is-error')
+            .find('.ff-el-help.ff-standalone-payment-error')
+            .remove();
+    }
+
+    function showStandalonePaymentError() {
+        var $firstItem = $form.find('.ff-single-payment-item').first();
+
+        clearStandalonePaymentError();
+
+        $firstItem.addClass('ff-el-is-error');
+        $firstItem.append(
+            '<div class="ff-el-help ff-standalone-payment-error">Please select at least one payment item.</div>'
+        );
+
+        $('html, body').animate({
+            scrollTop: $firstItem.offset().top - 120
+        }, 300);
+    }
+
+    $form.on('change', '.ff-single-payment-item input.ff_payment_item[type="checkbox"]', function () {
+        clearStandalonePaymentError();
+
         if (!this.checked) {
+            $(this).closest('.ff-el-form-check').removeClass('ff_item_selected');
             return;
         }
 
         var current = this;
 
-        $form.find('input.ff_payment_item[type="checkbox"]').not(current).each(function () {
+        $form.find('.ff-single-payment-item input.ff_payment_item[type="checkbox"]').not(current).each(function () {
             if (this.checked) {
                 $(this)
                     .prop('checked', false)
@@ -20,4 +45,17 @@ jQuery(document).ready(function ($) {
 
         $(current).closest('.ff-el-form-check').addClass('ff_item_selected');
     });
+
+    $form[0].addEventListener('submit', function (e) {
+        var hasStandalonePaymentSelected = $form
+            .find('.ff-single-payment-item input.ff_payment_item[type="checkbox"]:checked')
+            .length > 0;
+
+        if (!hasStandalonePaymentSelected) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            showStandalonePaymentError();
+            return false;
+        }
+    }, true);
 });
