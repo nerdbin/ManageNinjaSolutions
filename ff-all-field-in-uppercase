@@ -1,0 +1,45 @@
+(function () {
+    var upperCaseFieldNames = ['input_text', 'input_text_6'];
+
+    function upperCaseLetters(value) {
+        return value.replace(/[a-z]/g, function (letter) {
+            return letter.toUpperCase();
+        });
+    }
+
+    function upperCaseFirstLetter(value) {
+        return value.replace(/(^|[\s\-'])([a-z])/g, function (match, prefix, letter) {
+            return prefix + letter.toUpperCase();
+        });
+    }
+
+    function updateFieldValue(field, value) {
+        if (field.value === value) {
+            return;
+        }
+
+        var start = field.selectionStart;
+        var end = field.selectionEnd;
+
+        field.value = value;
+
+        if (typeof field.setSelectionRange === 'function' && document.activeElement === field) {
+            field.setSelectionRange(start, end);
+        }
+    }
+
+    document.addEventListener('input', function (event) {
+        var field = event.target;
+
+        if (!field.matches('.frm-fluent-form input[type="text"], .frm-fluent-form textarea')) {
+            return;
+        }
+
+        if (upperCaseFieldNames.indexOf(field.name) !== -1) {
+            updateFieldValue(field, upperCaseLetters(field.value));
+            return;
+        }
+
+        updateFieldValue(field, upperCaseFirstLetter(field.value));
+    });
+})();
