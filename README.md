@@ -1,12 +1,12 @@
 # ManageNinja Solutions
 
-A collection of custom solutions, snippets, and workarounds for ManageNinja products.
+A personal collection of custom snippets, examples, and workarounds for users of ManageNinja products.
 
-This repository is maintained by [nerdbin](https://github.com/nerdbin) and is intended to help users solve specific use cases that are not directly available through built-in plugin settings.
+This repository is maintained by [nerdbin](https://github.com/nerdbin). It is **not an official ManageNinja repository** and does not represent official ManageNinja custom solutions. The goal is simply to help users achieve specific custom use cases that may not be available through built-in plugin settings.
 
 ## About This Repository
 
-ManageNinja plugins are flexible and feature-rich, but some user requirements may need a small custom snippet or workflow adjustment.
+ManageNinja products are flexible, but some site-specific requirements may still need a small custom snippet or workflow adjustment.
 
 This repository contains practical examples for those cases, including solutions for:
 
@@ -16,7 +16,7 @@ This repository contains practical examples for those cases, including solutions
 - FluentCommunity
 - Other WPManageNinja products
 
-Each solution is provided as a standalone example so it can be reviewed, adapted, and tested based on the specific site requirements.
+Each solution is shared as a standalone example so it can be reviewed, adapted, and tested based on the specific site requirements.
 
 ## Available Solutions
 
@@ -41,7 +41,7 @@ Examples may include:
 
 ## Important Notes
 
-These are custom solutions and are not part of the official plugin core.
+These snippets are personal custom examples. They are not part of any official ManageNinja plugin, product, documentation, or support commitment.
 
 Before using any snippet:
 
@@ -59,4 +59,4 @@ Use them carefully and test properly before applying them to a live website.
 
 ## Contributions
 
-This repository is mainly used to share custom solutions with users. Improvements, refinements, or additional examples are welcome.
+This repository is mainly used to share helpful custom examples with users. Improvements, refinements, or additional examples are welcome.
