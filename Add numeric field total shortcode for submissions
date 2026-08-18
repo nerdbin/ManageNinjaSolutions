@@ -1,0 +1,24 @@
+<?php
+
+add_shortcode('ff_people_attending_total', function () {
+    global $wpdb;
+
+    $form_id = 75; //replace with your form ID
+    $field   = 'numeric_field'; //replace with your field's name attribute
+
+    $submissions_table = $wpdb->prefix . 'fluentform_submissions';
+    $details_table     = $wpdb->prefix . 'fluentform_entry_details';
+
+    $total = $wpdb->get_var($wpdb->prepare(
+        "SELECT SUM(CAST(d.field_value AS DECIMAL(10,2)))
+         FROM {$details_table} d
+         INNER JOIN {$submissions_table} s ON s.id = d.submission_id
+         WHERE s.form_id = %d
+         AND s.status != 'trashed'
+         AND d.field_name = %s",
+        $form_id,
+        $field
+    ));
+
+    return esc_html(number_format_i18n((float) $total));
+});
