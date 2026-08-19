@@ -4,8 +4,8 @@ add_shortcode('ff_people_attending_total', function ($atts = []) {
     global $wpdb;
 
     $atts = shortcode_atts([
-        'form_id' => 75,
-        'field'   => 'numeric_field',
+        'form_id' => 75, //replace with your form ID
+        'field'   => 'numeric_field', //replace with your numeric field's name attribute
         'url'     => ''
     ], $atts, 'ff_people_attending_total');
 
