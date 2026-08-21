@@ -1,0 +1,7 @@
+add_filter('fluentform/html_attributes', function ($attributes, $form) {
+    if ((int) $form->id === 75) {//replace with your form ID
+        $attributes['novalidate'] = 'novalidate';
+    }
+
+    return $attributes;
+}, 10, 2);
