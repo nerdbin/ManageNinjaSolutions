@@ -1,0 +1,22 @@
+add_filter('fluentform/integration_data_sendinblue', function ($data, $feed, $entry) {
+    $attribute_name = 'SIMPLE_TEXT_3';  // Replace SIMPLE_TEXT_3 with the Brevo custom Text attribute mapped to your textarea field
+
+
+    if (empty($data['attributes']) || !is_object($data['attributes'])) {
+        return $data;
+    }
+
+    if (!isset($data['attributes']->{$attribute_name}) || !is_string($data['attributes']->{$attribute_name})) {
+        return $data;
+    }
+
+    $value = $data['attributes']->{$attribute_name};
+
+    $value = html_entity_decode($value, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+    $value = preg_replace('/<br\s*\/?>/i', "\n", $value);
+    $value = str_replace(["\\r\\n", "\\n", "\\r", "\r\n", "\r"], "\n", $value);
+
+    $data['attributes']->{$attribute_name} = trim($value);
+
+    return $data;
+}, 10, 3);
