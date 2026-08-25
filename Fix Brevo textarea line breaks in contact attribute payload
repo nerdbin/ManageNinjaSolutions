@@ -1,5 +1,5 @@
 add_filter('fluentform/integration_data_sendinblue', function ($data, $feed, $entry) {
-    $attribute_name = 'SIMPLE_TEXT_3';  // Replace SIMPLE_TEXT_3 with the Brevo custom Text attribute mapped to your textarea field
+    $attribute_name = 'SIMPLE_TEXT';  // Replace SIMPLE_TEXT with the Brevo custom Text attribute mapped to your textarea field
 
 
     if (empty($data['attributes']) || !is_object($data['attributes'])) {
