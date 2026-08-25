@@ -1,0 +1,31 @@
+add_action('admin_init', function () {
+    if (!current_user_can('manage_options')) {
+        return;
+    }
+
+    $option_key = 'ff_mark_all_unread_entries_as_read_once';
+
+    if (get_option($option_key)) {
+        return;
+    }
+
+    global $wpdb;
+
+    $updated = $wpdb->update(
+        $wpdb->prefix . 'fluentform_submissions',
+        [
+            'status'     => 'read',
+            'updated_at' => current_time('mysql'),
+        ],
+        [
+            'status' => 'unread',
+        ],
+        ['%s', '%s'],
+        ['%s']
+    );
+
+    update_option($option_key, [
+        'updated_at' => current_time('mysql'),
+        'updated'    => (int) $updated,
+    ], false);
+});
