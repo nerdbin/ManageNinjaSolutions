@@ -1,0 +1,7 @@
+add_filter('fluentform/number_input_mode', function ($inputMode, $field, $form) {
+    if (!empty($field['element']) && $field['element'] === 'custom_payment_component') {
+        return 'decimal';
+    }
+
+    return $inputMode;
+}, 10, 3);
