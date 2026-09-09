@@ -1,0 +1,10 @@
+add_filter('fluentform/form_save_progress_messages', function ($messages, $form) {
+    if ((int) $form->id !== 123) { //replace the form ID with your own
+        return $messages;
+    }
+
+    $messages['email_placeholder'] = 'Enter your email address and click “Send Resume Link” to continue later.';
+    $messages['email_button'] = 'Send Resume Link';
+
+    return $messages;
+}, 10, 2);
