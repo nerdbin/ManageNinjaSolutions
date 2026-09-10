@@ -1,0 +1,65 @@
+(function () {
+    var form = $form[0];
+    var namespace = '.letterAddressPreview';
+    var previousTimer = $form.data('letterAddressPreviewTimer');
+
+    if (previousTimer) clearInterval(previousTimer);
+    $form.off(namespace);
+
+    function setPreviewText(element, value) {
+        if (element.textContent !== value) {
+            element.textContent = value;
+        }
+    }
+
+    function syncAddressPreview() {
+        ['address_line_1', 'address_line_2', 'city', 'zip']
+            .forEach(function (key) {
+                var name = 'letter_input[' + key + ']';
+                var input = form.querySelector('[name="' + name + '"]');
+                var value = input ? input.value : '';
+
+                $form.find('.ff_dynamic_value').each(function () {
+                    if (this.getAttribute('data-ref') === name) {
+                        setPreviewText(this, value);
+                    }
+                });
+            });
+
+        var country = form.querySelector(
+            'select[name="letter_input[country]"]'
+        );
+
+        var label = country && country.value && country.selectedIndex >= 0
+            ? country.options[country.selectedIndex].text.trim()
+            : '';
+
+        $form.find('.letter-country-preview').each(function () {
+            setPreviewText(this, label);
+        });
+    }
+
+    $form.on(
+        'input' + namespace + ' change' + namespace,
+        syncAddressPreview
+    );
+
+    $form.on(
+        'reset' + namespace + ' ff_render_dynamic_smartcodes' + namespace,
+        function () {
+            setTimeout(syncAddressPreview, 0);
+        }
+    );
+
+    syncAddressPreview();
+
+    var timer = setInterval(function () {
+        if (!form.isConnected) {
+            clearInterval(timer);
+            return;
+        }
+        syncAddressPreview();
+    }, 250);
+
+    $form.data('letterAddressPreviewTimer', timer);
+})();
