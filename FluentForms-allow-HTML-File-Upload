@@ -1,0 +1,74 @@
+/**
+ * Allow HTML uploads for one specific Fluent Forms upload field.
+ *
+ * Dummy values:
+ * Form ID: 123
+ * Upload field name: file-upload
+ */
+
+$targetFormId = 123;
+$targetField  = 'file-upload';
+
+add_filter(
+    'fluentform/upload_blocked_mime_extensions',
+    function ($blocked, $form, $attribute) use ($targetFormId, $targetField) {
+        if (
+            (int) $form->id !== $targetFormId ||
+            $attribute !== $targetField
+        ) {
+            return $blocked;
+        }
+
+        return array_values(array_filter((array) $blocked, function ($extension) {
+            return !in_array(
+                strtolower((string) $extension),
+                ['html', 'htm'],
+                true
+            );
+        }));
+    },
+    10,
+    3
+);
+
+add_filter(
+    'fluentform/default_upload_allowed_mimes',
+    function ($mimes, $form, $attribute) use ($targetFormId, $targetField) {
+        if (
+            (int) $form->id !== $targetFormId ||
+            $attribute !== $targetField
+        ) {
+            return $mimes;
+        }
+
+        $mimes = trim((string) $mimes, ',');
+
+        return $mimes
+            ? $mimes . ',html,htm'
+            : 'html,htm';
+    },
+    10,
+    3
+);
+
+add_filter(
+    'fluentform/uploader_args',
+    function ($args, $file, $form) use ($targetFormId) {
+        if ((int) $form->id !== $targetFormId) {
+            return $args;
+        }
+
+        $mimes = isset($args['mimes']) && is_array($args['mimes'])
+            ? $args['mimes']
+            : [];
+
+        $args['mimes'] = array_merge($mimes, [
+            'html' => 'text/html',
+            'htm'  => 'text/html',
+        ]);
+
+        return $args;
+    },
+    10,
+    3
+);
