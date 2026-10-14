@@ -1,0 +1,24 @@
+add_filter('fluentform/validate_input_item_input_text', function ($errorMessage, $field, $formData, $fields, $form) {
+    $targetFormId = 122; // Update this with your form ID
+    $targetFieldName = 'input_mask'; // Update this with the field's exact Name Attribute
+
+    if ((int) $form->id !== $targetFormId ||
+        ($field['name'] ?? '') !== $targetFieldName) {
+        return $errorMessage;
+    }
+
+    $value = trim((string) ($formData[$targetFieldName] ?? ''));
+
+    // Let the Required rule handle empty values.
+    if ($value === '') {
+        return $errorMessage;
+    }
+
+    if (!preg_match('/^[0-9]{13}$/', $value)) {
+        $errors = $errorMessage ? (array) $errorMessage : [];
+        $errors[] = 'Please enter exactly 13 digits.';
+        return $errors;
+    }
+
+    return $errorMessage;
+}, 10, 5);
