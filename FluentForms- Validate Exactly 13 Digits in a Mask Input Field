@@ -1,13 +1,19 @@
 add_filter('fluentform/validate_input_item_input_text', function ($errorMessage, $field, $formData, $fields, $form) {
     $targetFormId = 122; // Update this with your form ID
-    $targetFieldName = 'input_mask'; // Update this with the field's exact Name Attribute
+
+    $targetFieldNames = [
+        'input_mask', // Update this with your first Mask Input field's Name Attribute
+        'input_mask_2', // Update this with your second Mask Input field's Name Attribute
+    ];
+
+    $fieldName = $field['name'] ?? '';
 
     if ((int) $form->id !== $targetFormId ||
-        ($field['name'] ?? '') !== $targetFieldName) {
+        !in_array($fieldName, $targetFieldNames, true)) {
         return $errorMessage;
     }
 
-    $value = trim((string) ($formData[$targetFieldName] ?? ''));
+    $value = trim((string) ($formData[$fieldName] ?? ''));
 
     // Let the Required rule handle empty values.
     if ($value === '') {
